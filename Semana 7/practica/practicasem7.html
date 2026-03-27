@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Formulario con Tabla</title>
+  <!-- Tailwind desde CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6">
+
+  <div class="max-w-md mx-auto bg-white p-4 rounded shadow">
+    <h2 class="text-xl font-bold text-center mb-4">Formulario de Registro</h2>
+    <form id="formulario">
+      <label class="block mb-2">Nombre:</label>
+      <input type="text" id="nombre" required class="w-full border rounded px-2 py-1 mb-3">
+
+      <label class="block mb-2">Correo:</label>
+      <input type="email" id="correo" required class="w-full border rounded px-2 py-1 mb-3">
+
+      <label class="block mb-2">Mensaje/Descripción:</label>
+      <textarea id="mensaje" class="w-full border rounded px-2 py-1 mb-3"></textarea>
+
+      <button type="submit" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">
+        Agregar
+      </button>
+    </form>
+  </div>
+
+  <div class="max-w-2xl mx-auto mt-6 bg-white p-4 rounded shadow">
+    <h2 class="text-lg font-bold mb-3">Datos Registrados</h2>
+    <table id="tabla" class="w-full border-collapse">
+      <thead>
+        <tr class="bg-blue-500 text-white">
+          <th class="border px-2 py-1">Nombre</th>
+          <th class="border px-2 py-1">Correo</th>
+          <th class="border px-2 py-1">Mensaje</th>
+          <th class="border px-2 py-1">Acciones</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <script>
+    const formulario = document.getElementById("formulario");
+    const tabla = document.getElementById("tabla").querySelector("tbody");
+
+    formulario.addEventListener("submit", function(e) {
+      e.preventDefault();
+      const nombre = document.getElementById("nombre").value;
+      const correo = document.getElementById("correo").value;
+      const mensaje = document.getElementById("mensaje").value;
+
+      const fila = document.createElement("tr");
+      fila.innerHTML = `
+        <td class="border px-2 py-1">${nombre}</td>
+        <td class="border px-2 py-1">${correo}</td>
+        <td class="border px-2 py-1">${mensaje}</td>
+        <td class="border px-2 py-1">
+          <button onclick="editar(this)" class="bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-600">Modificar</button>
+        </td>
+      `;
+      tabla.appendChild(fila);
+
+      formulario.reset();
+    });
+
+    function editar(boton) {
+      const fila = boton.parentNode.parentNode;
+      const nombre = fila.children[0].textContent;
+      const correo = fila.children[1].textContent;
+      const mensaje = fila.children[2].textContent;
+
+      document.getElementById("nombre").value = nombre;
+      document.getElementById("correo").value = correo;
+      document.getElementById("mensaje").value = mensaje;
+
+      fila.remove(); // elimina la fila para que al guardar se actualice
+    }
+  </script>
+</body>
+</html>
